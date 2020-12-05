@@ -38,6 +38,9 @@
     <Text Include="Day4.txt">
       <Filter>Source Files</Filter>
     </Text>
+    <Text Include="Day5.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AdventOfCode2020.h">

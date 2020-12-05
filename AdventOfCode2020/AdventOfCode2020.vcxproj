@@ -148,6 +148,7 @@
     <Text Include="Day2.txt" />
     <Text Include="Day3.txt" />
     <Text Include="Day4.txt" />
+    <Text Include="Day5.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AdventOfCode2020.h" />

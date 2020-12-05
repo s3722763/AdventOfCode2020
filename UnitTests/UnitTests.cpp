@@ -32,5 +32,11 @@ public:
 		Assert::AreEqual(8, valid_passports[0]);
 		Assert::AreEqual(4, valid_passports[1]);
 	}
+	TEST_METHOD(TestDay5) {
+		std::vector<std::vector<aoc::BoardingPassDirection>> boarding_passes = aoc_util::day5_boarding_pass_process("Day5Test.txt");
+		int results[2] = { 0,0 };
+		aoc::day5_opt(boarding_passes, results);
+		Assert::AreEqual(357, results[0]);
+	}
 	};
 }

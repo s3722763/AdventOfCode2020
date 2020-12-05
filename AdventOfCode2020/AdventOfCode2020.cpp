@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <assert.h>
+
 #include "AdventOfCode2020.h"
 #include "Utility.h"
 
@@ -45,6 +47,11 @@ int main() {
 	std::vector<Passport> passports = aoc_util::day4_read("Day4.txt");
 	aoc::day4_opt(passports, valid_passports);
 	std::cout << "Part 1: " << valid_passports[0] << " Part 2: " << valid_passports[1] << std::endl;
+
+	int day5_results[2] = { 0,0 };
+	auto boarding_passes = aoc_util::day5_boarding_pass_process("Day5.txt");
+	aoc::day5_opt(boarding_passes, day5_results);
+	std::cout << "Part 1: " << day5_results[0] << " Part 2: " << day5_results[1] << std::endl;
 }
 
 namespace aoc {
@@ -105,7 +112,7 @@ namespace aoc {
 			//std::cout << "Character: " << character << " -> ";
 			auto min_max = split(&tokens[0], &min_max_delimiter);
 
-			for (char &c : tokens[2]) {
+			for (char& c : tokens[2]) {
 				//std::cout << c;
 				if (c == character) {
 					count += 1;
@@ -124,12 +131,13 @@ namespace aoc {
 			if (count >= min && count <= max) {
 				result[0] += 1;
 			}
-			
+
 			bool is_pos = false;
 
 			if (tokens[2].at(min - 1) == character && !(tokens[2].at(max - 1) == character)) {
 				result[1] += 1;
-			} else if (!(tokens[2].at(min - 1) == character) && tokens[2].at(max - 1) == character) {
+			}
+			else if (!(tokens[2].at(min - 1) == character) && tokens[2].at(max - 1) == character) {
 				result[1] += 1;
 			}
 		}
@@ -139,7 +147,7 @@ namespace aoc {
 		int width = grid[0].size();
 		int depth = grid.size();
 
-		int x_change_settings[5] = {1, 3, 5, 7, 1};
+		int x_change_settings[5] = { 1, 3, 5, 7, 1 };
 		int y_change_settings[5] = { 1, 1, 1, 1, 2 };
 
 		for (int i = 0; i < 5; i++) {
@@ -164,13 +172,15 @@ namespace aoc {
 			if (i == 0) {
 				//First so multipling by trees == 0 so we just set result[1] to it
 				result[1] = hit_trees;
-			} else if (i == 1) {
+			}
+			else if (i == 1) {
 				//This is the first part of this day
 				result[0] = hit_trees;
 				result[1] *= hit_trees;
-			} else {
+			}
+			else {
 				result[1] *= hit_trees;
-			}			
+			}
 		}
 	}
 
@@ -182,8 +192,78 @@ namespace aoc {
 
 			if (passport->is_valid(true)) {
 				result[1] += 1;
-				
+
 				//passport->print();
+			}
+		}
+	}
+
+	void day5_opt(std::vector<std::vector<aoc::BoardingPassDirection>> boarding_passes, int* results) {
+		int highest = 0;
+		int seats[1024] = {};
+
+		for (auto boarding_pass = boarding_passes.begin(); boarding_pass != boarding_passes.end(); boarding_pass++) {
+			int low_r = 0;
+			int high_r = 127;
+			int low_c = 0;
+			int high_c = 7;
+
+			for (auto direction = boarding_pass->begin(); direction != boarding_pass->end(); direction++) {
+				int middle_r = (low_r + high_r) / 2;
+				int middle_c = (low_c + high_c) / 2;
+				bool round_r = false;
+				bool round_c = false;
+
+				if ((low_r + high_r) % 2 == 1) {
+					round_r = true;
+				}
+
+				if ((low_c + high_c) % 2 == 1) {
+					round_c = true;
+				}
+
+				if (*direction == aoc::BoardingPassDirection::Forward) {
+					high_r = middle_r;
+				}
+				else if (*direction == aoc::BoardingPassDirection::Backward) {
+					low_r = middle_r;
+
+					if (round_r) {
+						low_r += 1;
+					}
+				}
+				else if (*direction == aoc::BoardingPassDirection::Left) {
+					high_c = middle_c;
+				}
+				else if (*direction == aoc::BoardingPassDirection::Right) {
+					low_c = middle_c;
+
+					if (round_c) {
+						low_c += 1;
+					}
+				}
+
+				//std::cout << low_r << ":" << high_r << " " << low_c << ":" << high_c << std::endl;
+			}
+
+			assert(low_c == high_c);
+			assert(low_r == high_r);
+
+			int id = (low_r * 8) + low_c;
+
+			if (id > highest) {
+				highest = id;
+			}
+
+			seats[id] = 1;
+		}
+
+		results[0] = highest;
+
+		for (int i = 8; i < 1024; i++) {
+			if (seats[i] == 0 && seats[i - 8] == 1 && seats[i + 8] == 1) {
+				results[1] = i;
+				return;
 			}
 		}
 	}
@@ -205,7 +285,8 @@ namespace aoc_util {
 
 				if (c == '.') {
 					line_grid.push_back(aoc::Day3Grid::Open);
-				} else if (c == '#') {
+				}
+				else if (c == '#') {
 					line_grid.push_back(aoc::Day3Grid::Tree);
 				}
 			}
@@ -221,12 +302,45 @@ namespace aoc_util {
 			for (int x = 0; x < grid[y].size(); x++) {
 				if (grid[y][x] == aoc::Day3Grid::Open) {
 					std::cout << '.';
-				} else if (grid[y][x] == aoc::Day3Grid::Tree) {
+				}
+				else if (grid[y][x] == aoc::Day3Grid::Tree) {
 					std::cout << '#';
 				}
 			}
 
 			std::cout << std::endl;
 		}
+	}
+
+	std::vector<std::vector<aoc::BoardingPassDirection>> day5_boarding_pass_process(std::string filename) {
+		std::ifstream file(filename);
+		std::string line;
+		std::vector<std::vector<aoc::BoardingPassDirection>> boarding_passes;
+
+		while (getline(file, line)) {
+			std::vector<aoc::BoardingPassDirection> boarding_pass;
+
+			for (char& c : line) {
+				if (c == 'F') {
+					boarding_pass.push_back(aoc::BoardingPassDirection::Forward);
+				}
+				else if (c == 'B') {
+					boarding_pass.push_back(aoc::BoardingPassDirection::Backward);
+				}
+				else if (c == 'L') {
+					boarding_pass.push_back(aoc::BoardingPassDirection::Left);
+				}
+				else if (c == 'R') {
+					boarding_pass.push_back(aoc::BoardingPassDirection::Right);
+				}
+				else {
+					std::cout << "Invalid Day 5 boarding pass: " << c << std::endl;
+				}
+			}
+
+			boarding_passes.push_back(boarding_pass);
+		}
+
+		return boarding_passes;
 	}
 }
