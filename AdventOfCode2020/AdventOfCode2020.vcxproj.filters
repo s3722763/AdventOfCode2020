@@ -27,19 +27,22 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Day1.txt">
-      <Filter>Source Files</Filter>
-    </Text>
-    <Text Include="Day2.txt">
-      <Filter>Source Files</Filter>
+      <Filter>Resource Files</Filter>
     </Text>
     <Text Include="Day3.txt">
-      <Filter>Source Files</Filter>
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Day2.txt">
+      <Filter>Resource Files</Filter>
     </Text>
     <Text Include="Day4.txt">
-      <Filter>Source Files</Filter>
+      <Filter>Resource Files</Filter>
     </Text>
     <Text Include="Day5.txt">
-      <Filter>Source Files</Filter>
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Day6.txt">
+      <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

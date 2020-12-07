@@ -9,6 +9,8 @@
 #include "AdventOfCode2020.h"
 #include "Utility.h"
 
+#define DAY6_PEOPLE_INDEX 26
+
 int main() {
 	std::ifstream file("Day1.txt");
 	int count = 0;
@@ -52,6 +54,11 @@ int main() {
 	auto boarding_passes = aoc_util::day5_boarding_pass_process("Day5.txt");
 	aoc::day5_opt(boarding_passes, day5_results);
 	std::cout << "Part 1: " << day5_results[0] << " Part 2: " << day5_results[1] << std::endl;
+
+	std::vector<std::vector<int>> answers = aoc_util::day6_read("Day6.txt");
+	int day6_results[2] = {};
+	aoc::day6_opt(answers, day6_results);
+	std::cout << "Part 1: " << day6_results[0] << " Part 2: " << day6_results[1] << std::endl;
 }
 
 namespace aoc {
@@ -267,6 +274,32 @@ namespace aoc {
 			}
 		}
 	}
+
+	void day6_opt(std::vector<std::vector<int>> answers, int* results) {
+		results[0] = 0;
+		int everyone_answers[26] = {};
+
+		for (auto answer_set = answers.begin(); answer_set != answers.end(); answer_set++) {
+			int sum = 0;
+
+			for (int i = 0; i < 26; i++) {
+				if ((*answer_set)[i] >= 1) {
+					//std::cout << ((char)(i + 97)) << " ";
+					everyone_answers[i] = 1;
+					sum += 1;
+				}
+
+				if ((*answer_set)[i] == (*answer_set)[DAY6_PEOPLE_INDEX]) {
+					//std::cout << ((char)(i + 97)) << " ";
+					results[1] += 1;
+				}
+			}
+			
+			std::cout << std::endl;
+			//std::cout << " count: " << sum << std::endl;
+			results[0] += sum;
+		}
+	}
 }
 
 namespace aoc_util {
@@ -342,5 +375,48 @@ namespace aoc_util {
 		}
 
 		return boarding_passes;
+	}
+
+	std::vector<std::vector<int>> day6_read(std::string filename) {
+		std::ifstream file(filename);
+		std::string line;
+
+		std::vector<std::vector<int>> question_answers;
+		std::vector<int> answers;
+		answers.reserve(27);
+
+		for (int i = 0; i < 27; i++) {
+			answers.push_back(0);
+		}
+
+		while (getline(file, line)) {
+			if (line.empty()) {
+				question_answers.push_back(answers);
+				answers.clear();
+
+				for (int i = 0; i < 27; i++) {
+					answers.push_back(0);
+				}
+			}
+			else {
+				for (char& c : line) {
+					answers[(int)c - 97] += 1;
+				}
+
+				answers[DAY6_PEOPLE_INDEX] += 1;
+			}
+		}
+
+		for (char& c : line) {
+			answers[(int)c - 97] += 1;
+			answers[DAY6_PEOPLE_INDEX] += 1;
+		}
+		
+
+		if (!answers.empty()) {
+			question_answers.push_back(answers);
+		}
+
+		return question_answers;
 	}
 }

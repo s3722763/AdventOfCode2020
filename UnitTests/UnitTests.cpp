@@ -38,5 +38,12 @@ public:
 		aoc::day5_opt(boarding_passes, results);
 		Assert::AreEqual(357, results[0]);
 	}
+	TEST_METHOD(TestDay6) {
+		std::vector<std::vector<int>> answers = aoc_util::day6_read("Day6Test.txt");
+		int results[2] = {};
+		aoc::day6_opt(answers, results);
+		Assert::AreEqual(11, results[0]);
+		Assert::AreEqual(6, results[1]);
+	}
 	};
 }
