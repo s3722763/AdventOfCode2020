@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AdventOfCode2020.cpp" />
+    <ClCompile Include="Day7.cpp" />
     <ClCompile Include="Passport.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
@@ -150,9 +151,11 @@
     <Text Include="Day4.txt" />
     <Text Include="Day5.txt" />
     <Text Include="Day6.txt" />
+    <Text Include="Day7.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AdventOfCode2020.h" />
+    <ClInclude Include="Day7.h" />
     <ClInclude Include="Passport.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>

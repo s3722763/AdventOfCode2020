@@ -24,6 +24,9 @@
     <ClCompile Include="Utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Day7.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Day1.txt">
@@ -44,6 +47,9 @@
     <Text Include="Day6.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Day7.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AdventOfCode2020.h">
@@ -53,6 +59,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Day7.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

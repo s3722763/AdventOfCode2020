@@ -59,6 +59,24 @@ int main() {
 	int day6_results[2] = {};
 	aoc::day6_opt(answers, day6_results);
 	std::cout << "Part 1: " << day6_results[0] << " Part 2: " << day6_results[1] << std::endl;
+
+	auto map = aoc_util::string_to_bag_map("Day7.txt");
+
+	/*for (auto a = map.begin(); a != map.end(); a++) {
+		std::cout << a->first << " contain ";
+
+		for (auto &bag : a->second) {
+			char plural = bag.second > 1 ? 's' : ' ';
+			std::cout << bag.second << " " << bag.first << plural << " ";
+		}
+
+		std::cout << std::endl;
+	}*/
+
+	int day7_results[2] = {};
+	aoc::day7_opt(map, day7_results);
+	std::cout << "Part 1: " << day7_results[0] << " Part 2: " << day7_results[1] << std::endl;
+
 }
 
 namespace aoc {
@@ -294,11 +312,61 @@ namespace aoc {
 					results[1] += 1;
 				}
 			}
-			
-			std::cout << std::endl;
+
+			//std::cout << std::endl;
 			//std::cout << " count: " << sum << std::endl;
 			results[0] += sum;
 		}
+	}
+
+	void day7_opt(std::unordered_map<std::string, std::vector<std::pair<std::string, int>>>& bag_map, int* results) {
+		//Part 1
+		for (auto& start_bag : bag_map) {
+			//std::cout << start_bag.first << "------" << std::endl;
+			if (find_shiny_gold(start_bag.first, bag_map)) {
+				results[0] += 1;
+			}
+
+			//std::cout << std::endl;
+		}
+
+		results[1] = find_number_bags("shiny gold bag", bag_map);
+	}
+
+	bool find_shiny_gold(const std::string &bag_to_check, std::unordered_map<std::string, std::vector<std::pair<std::string, int>>> &map) {
+		if (map.find(bag_to_check) != map.end()) {
+			for (auto& bag : map.at(bag_to_check)) {
+				//std::cout << bag.first << std::endl;
+				if (bag.first.find("shiny gold") != std::string::npos) {
+					return true;
+				}
+
+				if (find_shiny_gold(bag.first, map)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	int find_number_bags(const std::string& bag_to_check, std::unordered_map<std::string, std::vector<std::pair<std::string, int>>>& map) {
+		int amount = 0;
+
+		if (map.find(bag_to_check) != map.end()) {
+			for (auto& bag : map.at(bag_to_check)) {
+
+				int inside_amount = find_number_bags(bag.first, map);
+				if (inside_amount != 0) {
+					amount += (bag.second * inside_amount) + bag.second;
+				}
+				else {
+					amount += bag.second;
+				}
+				
+			}
+		}
+
+		return amount;
 	}
 }
 
@@ -411,7 +479,7 @@ namespace aoc_util {
 			answers[(int)c - 97] += 1;
 			answers[DAY6_PEOPLE_INDEX] += 1;
 		}
-		
+
 
 		if (!answers.empty()) {
 			question_answers.push_back(answers);

@@ -45,5 +45,11 @@ public:
 		Assert::AreEqual(11, results[0]);
 		Assert::AreEqual(6, results[1]);
 	}
+	TEST_METHOD(TestDay7) {
+		auto map = aoc_util::string_to_bag_map("Day7Test.txt");
+		int results[2] = {};
+		aoc::day7_opt(map, results);
+		Assert::AreEqual(5, results[0]);
+	}	
 	};
 }

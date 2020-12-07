@@ -1,5 +1,6 @@
 #pragma once
 #include "Passport.h"
+#include "Day7.h"
 #include <vector>
 #include <string>
 
@@ -22,6 +23,9 @@ namespace aoc {
 	void day4_opt(std::vector<Passport> passports, int* result);
 	void day5_opt(std::vector<std::vector<aoc::BoardingPassDirection>> boarding_passes, int* result);
 	void day6_opt(std::vector<std::vector<int>> answers, int* results);
+	void day7_opt(std::unordered_map<std::string, std::vector<std::pair<std::string, int>>>& bag_map, int* results);
+	bool find_shiny_gold(const std::string& bag_to_check, std::unordered_map<std::string, std::vector<std::pair<std::string, int>>>& map);
+	int find_number_bags(const std::string& bag_to_check, std::unordered_map<std::string, std::vector<std::pair<std::string, int>>>& map);
 }
 
 namespace aoc_util {
