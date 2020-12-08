@@ -51,5 +51,13 @@ public:
 		aoc::day7_opt(map, results);
 		Assert::AreEqual(5, results[0]);
 	}	
+	TEST_METHOD(TestDay8) {
+		Day8Computer computer;
+		computer.file_to_memory("Day8Test.txt");
+		int results[2] = {};
+		aoc::day8_opt(computer, results);
+		Assert::AreEqual(5, results[0]);
+		Assert::AreEqual(8, results[1]);
+	}
 	};
 }

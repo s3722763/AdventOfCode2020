@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <assert.h>
+#include <algorithm>
 
 #include "AdventOfCode2020.h"
 #include "Utility.h"
@@ -77,6 +78,11 @@ int main() {
 	aoc::day7_opt(map, day7_results);
 	std::cout << "Part 1: " << day7_results[0] << " Part 2: " << day7_results[1] << std::endl;
 
+	int day8_results[2] = {};
+	Day8Computer day_8_computer;
+	day_8_computer.file_to_memory("Day8.txt");
+	aoc::day8_opt(day_8_computer, day8_results);
+	std::cout << "Part 1: " << day8_results[0] << " Part 2: " << day8_results[1] << std::endl;
 }
 
 namespace aoc {
@@ -367,6 +373,66 @@ namespace aoc {
 		}
 
 		return amount;
+	}
+
+	bool check_loop(Day8Computer &computer) {
+		std::vector<int> pc_accessed;
+		bool at_end = false;
+
+		while (!at_end) {
+			pc_accessed.push_back(computer.pc);
+			computer.cycle();
+
+			if (std::find(pc_accessed.begin(), pc_accessed.end(), computer.pc) != pc_accessed.end()) {
+				return false;
+			}
+			else if (computer.pc == computer.memory.size()) {
+				return true;
+			}
+		}
+
+		return true;
+	}
+
+	void day8_opt(Day8Computer &computer, int* results) {
+		std::vector<int> pc_accessed;
+		bool loop_found = false;
+		
+		while (!loop_found) {
+			pc_accessed.push_back(computer.pc);
+			int old_accumulator = computer.accumulator;
+			computer.cycle();
+
+			if (std::find(pc_accessed.begin(), pc_accessed.end(), computer.pc) != pc_accessed.end()) {
+				results[0] = old_accumulator;
+				loop_found = true;
+			}
+		}
+
+		for (int i = 0; i < computer.memory.size(); i++) {
+			if (computer.memory[i].first == Instruction::JMP) {
+				//Change to NOP
+				computer.memory[i].first = Instruction::NOP;
+
+				if (check_loop(computer)) {
+					results[1] = computer.accumulator;
+				}
+
+				computer.memory[i].first = Instruction::JMP;
+			}
+			else if (computer.memory[i].first == Instruction::NOP) {
+				//Change to JMP
+				computer.memory[i].first = Instruction::JMP;
+
+				if (check_loop(computer)) {
+					results[1] = computer.accumulator;
+				}
+
+				computer.memory[i].first = Instruction::NOP;
+			}
+
+			computer.reset();
+		}
 	}
 }
 
