@@ -83,6 +83,11 @@ int main() {
 	day_8_computer.file_to_memory("Day8.txt");
 	aoc::day8_opt(day_8_computer, day8_results);
 	std::cout << "Part 1: " << day8_results[0] << " Part 2: " << day8_results[1] << std::endl;
+
+	int day9_results[2] = {};
+	std::vector<int> day9_numbers = aoc_util::day9_read("Day9.txt");
+	aoc::day9_opt(day9_numbers, 25, day9_results);
+	std::cout << "Part 1: " << day9_results[0] << " Part 2: " << day9_results[1] << std::endl;
 }
 
 namespace aoc {
@@ -434,6 +439,65 @@ namespace aoc {
 			computer.reset();
 		}
 	}
+
+	void day9_opt(std::vector<int> numbers, int preamble_length, int* results) {
+		for (int i = preamble_length; i < numbers.size(); i++) {
+			int& number = numbers[i];
+			int start = i - preamble_length;
+			int end = i;
+			bool found_sum = false;
+
+			for (int first_number_index = start; first_number_index < end; first_number_index++) {
+				int first_number = numbers[first_number_index];
+
+				for (int second_number_index = start; second_number_index < end; second_number_index++) {
+					if (first_number_index != second_number_index) {
+						int second_number = numbers[second_number_index];
+
+						if ((first_number + second_number) == number) {
+							found_sum = true;
+							break;
+						}
+					}
+				}
+
+				if (found_sum) {
+					break;
+				}
+			}
+
+			if (!found_sum) {
+				results[0] = number;
+				break;
+			}
+		}
+
+		int invalid_number = results[0];
+
+		for (int i = 0; i < numbers.size(); i++) {
+			int sum = numbers[i];
+			int increment_index = 1;
+			int lowest = numbers[i];
+			int highest = numbers[i];
+
+			while (sum < invalid_number) {
+				int new_number = numbers[i + increment_index];
+				sum += new_number;
+				increment_index += 1;
+				if (new_number < lowest) {
+					lowest = new_number;
+				}
+				else if (new_number > highest) {
+					highest = new_number;
+				}
+			}
+
+			if (sum == invalid_number) {
+				results[1] = lowest + highest;
+				return;
+			}
+		}
+	}
 }
 
 namespace aoc_util {
@@ -552,5 +616,17 @@ namespace aoc_util {
 		}
 
 		return question_answers;
+	}
+
+	std::vector<int> day9_read(const char* filename) {
+		std::ifstream file(filename);
+		std::vector<int> numbers;
+		int number;
+
+		while (file >> number) {
+			numbers.push_back(number);
+		}
+
+		return numbers;
 	}
 }

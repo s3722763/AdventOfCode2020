@@ -26,6 +26,7 @@ namespace aoc {
 	void day6_opt(std::vector<std::vector<int>> answers, int* results);
 	void day7_opt(std::unordered_map<std::string, std::vector<std::pair<std::string, int>>>& bag_map, int* results);
 	void day8_opt(Day8Computer &computer, int* results);
+	void day9_opt(std::vector<int> numbers, int preamble_length, int* results);
 	bool find_shiny_gold(const std::string& bag_to_check, std::unordered_map<std::string, std::vector<std::pair<std::string, int>>>& map);
 	int find_number_bags(const std::string& bag_to_check, std::unordered_map<std::string, std::vector<std::pair<std::string, int>>>& map);
 }
@@ -36,4 +37,5 @@ namespace aoc_util {
 	std::vector<Passport> day4_read(std::string filename);
 	std::vector<std::vector<aoc::BoardingPassDirection>> day5_boarding_pass_process(std::string filename);
 	std::vector<std::vector<int>> day6_read(std::string);
+	std::vector<int> day9_read(const char* filename);
 }

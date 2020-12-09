@@ -59,5 +59,12 @@ public:
 		Assert::AreEqual(5, results[0]);
 		Assert::AreEqual(8, results[1]);
 	}
+	TEST_METHOD(TestDay9) {
+		std::vector<int> numbers = aoc_util::day9_read("Day9Test.txt");
+		int results[2] = {};
+		aoc::day9_opt(numbers, 5, results);
+		Assert::AreEqual(127, results[0]);
+		Assert::AreEqual(62, results[1]);
+	}
 	};
 }
